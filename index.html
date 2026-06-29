@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>L181 Sales Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F6FA;--white:#fff;--surface:#ECEEF4;
+  --border:#DDE1EC;--border2:#C8CEDD;
+  --text:#1A1D2E;--muted:#6B7280;--light:#9CA3AF;
+  --blue:#3B5BF6;--blue-bg:#EEF1FE;--blue-bd:#D6DCFD;
+  --green:#15803D;--green-bg:#F0FDF4;--green-bd:#BBF7D0;
+  --mono:'Courier New',Courier,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh}
+.shell{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:210px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.logo{padding:18px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-box{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-box svg{width:18px;height:18px;fill:white}
+.logo-name{font-size:14px;font-weight:700;color:var(--text)}
+.logo-sub{font-size:11px;color:var(--muted)}
+.nav-lbl{padding:16px 16px 6px;font-size:10px;font-weight:700;color:var(--light);letter-spacing:.1em;text-transform:uppercase}
+.date-list{flex:1;overflow-y:auto;padding:4px 8px}
+.dc{padding:10px;border-radius:8px;cursor:pointer;margin-bottom:3px;border:1.5px solid transparent;transition:.12s}
+.dc:hover{background:var(--bg)}
+.dc.active{background:var(--blue-bg);border-color:var(--blue-bd)}
+.dc .dl{font-size:13px;font-weight:600;color:var(--text)}
+.dc.active .dl{color:var(--blue)}
+.dc .dm{font-size:11px;color:var(--muted);margin-top:2px}
+.dc.active .dm{color:#6B7FEC}
+.sbot{padding:12px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--light);line-height:1.7}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0}
+.ptitle{font-size:15px;font-weight:700}
+.srch{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:0 12px;height:36px;width:250px;transition:.15s}
+.srch:focus-within{border-color:var(--blue);background:var(--white)}
+.srch svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2;flex-shrink:0}
+.srch input{border:none;background:transparent;font-size:13px;color:var(--text);outline:none;width:100%;font-family:var(--sans)}
+.srch input::placeholder{color:var(--light)}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:14px 22px;flex-shrink:0}
+.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
+.cl{font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.cv{font-size:19px;font-weight:700;color:var(--text);line-height:1.2}
+.cv.g{color:var(--green)}
+.cs{font-size:11px;color:var(--muted);margin-top:3px}
+.tarea{flex:1;overflow:auto;padding:0 22px 20px}
+.ttop{display:flex;align-items:center;justify-content:space-between;padding:10px 0 8px}
+.tcnt{font-size:12px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:5px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+.badge svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5}
+table{width:100%;border-collapse:separate;border-spacing:0;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+th{padding:9px 12px;font-size:10px;font-weight:700;color:var(--muted);text-align:right;background:var(--surface);border-bottom:1px solid var(--border);white-space:nowrap;text-transform:uppercase;letter-spacing:.05em;position:sticky;top:0;z-index:1}
+th:first-child{text-align:left}
+td{padding:7px 12px;border-bottom:1px solid var(--border);text-align:right;font-size:12.5px;color:var(--muted)}
+td:first-child{text-align:left;font-family:var(--mono);font-size:11px;color:var(--text);font-weight:600;max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+td.n{color:var(--text);font-weight:600}
+td.p{color:var(--green);font-weight:700}
+tbody tr:hover td{background:#FAFBFF}
+tbody tr:last-child td{border-bottom:none}
+.tot td{background:var(--surface);font-weight:700;color:var(--text);border-top:2px solid var(--border2)}
+.tot td.p{color:var(--green)}
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+.loading{display:flex;align-items:center;justify-content:center;height:200px;color:var(--muted);font-size:13px;gap:10px}
+@media(max-width:800px){.sidebar{width:170px}.cards{grid-template-columns:repeat(3,1fr)}.cv{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-box">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg>
+      </div>
+      <div><div class="logo-name">L181</div><div class="logo-sub">Sales Dashboard</div></div>
+    </div>
+    <div class="nav-lbl">Reports</div>
+    <div class="date-list" id="dateList"><div class="loading">Loading...</div></div>
+    <div class="sbot">whl181_ SKUs only<br>Paid + partially refunded<br>Data updates daily</div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="ptitle" id="ptitle">Loading dashboard...</div>
+      <div class="srch">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search SKU..." id="srchInput">
+      </div>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="tarea">
+      <div class="ttop">
+        <span class="tcnt" id="tcnt"></span>
+        <span class="badge"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span id="mgTxt"></span></span>
+      </div>
+      <table>
+        <thead><tr>
+          <th style="width:36%">SKU</th><th style="width:7%">Qty</th>
+          <th style="width:10%">Sale price</th><th style="width:12%">Selling value</th>
+          <th style="width:9%">Cost</th><th style="width:13%">Costing value</th>
+          <th style="width:11%;color:#15803D">Profit</th>
+        </tr></thead>
+        <tbody id="tbody"><tr><td colspan="7" class="loading">Loading data...</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script>
+let REPORTS={}, active='', q='';
+const fmt=n=>n==null?'—':'₹'+(+n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtN=n=>n==null?'—':(+n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+async function loadData(){
+  try{
+    const r=await fetch('data.json?t='+Date.now());
+    const d=await r.json();
+    REPORTS=d.reports||{};
+    const dates=Object.keys(REPORTS).sort().reverse();
+    if(dates.length) go(dates[0]);
+    sidebar();
+  }catch(e){
+    document.getElementById('tbody').innerHTML='<tr><td colspan="7" class="empty">Error loading data. Please refresh.</td></tr>';
+    document.getElementById('ptitle').textContent='Error loading dashboard';
+  }
+}
+
+function sidebar(){
+  document.getElementById('dateList').innerHTML=Object.keys(REPORTS).sort().reverse().map(d=>{
+    const r=REPORTS[d];
+    const s=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+    const p=r.rows.reduce((a,x)=>a+(x.profit||0),0);
+    return `<div class="dc${d===active?' active':''}" onclick="go('${d}')" role="button" tabindex="0">
+      <div class="dl">${r.label}</div>
+      <div class="dm">₹${Math.round(s).toLocaleString('en-IN')} · P: ₹${Math.round(p).toLocaleString('en-IN')}</div>
+    </div>`;
+  }).join('');
+}
+
+function go(d){active=d;sidebar();render();}
+
+function render(){
+  const r=REPORTS[active];if(!r)return;
+  document.getElementById('ptitle').textContent=r.label+' — SKU Sales Report';
+  const rows=r.rows.filter(x=>!q||x.sku.toLowerCase().includes(q));
+  const tQ=rows.reduce((a,x)=>a+(x.salesQty||0),0);
+  const tS=rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+  const tC=rows.reduce((a,x)=>a+(x.costingValue||0),0);
+  const tP=rows.reduce((a,x)=>a+(x.profit||0),0);
+  const mg=tS?((tP/tS)*100).toFixed(1):0;
+  document.getElementById('cards').innerHTML=`
+    <div class="card"><div class="cl">SKUs</div><div class="cv">${rows.length}</div><div class="cs">unique products</div></div>
+    <div class="card"><div class="cl">Total qty</div><div class="cv">${tQ.toLocaleString('en-IN')}</div><div class="cs">units sold</div></div>
+    <div class="card"><div class="cl">Selling value</div><div class="cv" style="font-size:15px">${fmt(tS)}</div><div class="cs">gross revenue</div></div>
+    <div class="card"><div class="cl">Costing value</div><div class="cv" style="font-size:15px">${fmt(tC)}</div><div class="cs">total cost</div></div>
+    <div class="card"><div class="cl">Net profit</div><div class="cv g" style="font-size:15px">${fmt(tP)}</div><div class="cs">${mg}% margin</div></div>`;
+  document.getElementById('tcnt').textContent=rows.length+' SKUs'+(q?' (filtered)':'');
+  document.getElementById('mgTxt').textContent=mg+'% profit margin';
+  const tb=document.getElementById('tbody');
+  if(!rows.length){tb.innerHTML='<tr><td colspan="7" class="empty">No results found</td></tr>';return;}
+  tb.innerHTML=rows.map(x=>`<tr>
+    <td title="${x.sku}">${x.sku}</td>
+    <td class="n">${(x.salesQty||0).toLocaleString()}</td>
+    <td>${fmtN(x.salesPrice)}</td><td>${fmtN(x.sellingValue)}</td>
+    <td>${fmtN(x.cost)}</td><td>${fmtN(x.costingValue)}</td>
+    <td class="p">${fmtN(x.profit)}</td>
+  </tr>`).join('')+`<tr class="tot">
+    <td>Total — ${rows.length} SKUs</td><td class="n">${tQ.toLocaleString('en-IN')}</td><td></td>
+    <td>${fmtN(tS)}</td><td></td><td>${fmtN(tC)}</td><td class="p">${fmtN(tP)}</td>
+  </tr>`;
+}
+document.getElementById('srchInput').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render();});
+loadData();
+</script>
+</body>
+</html>
