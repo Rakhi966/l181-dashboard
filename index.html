@@ -52,6 +52,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .btn-exp:hover{background:#0F6B30}
 .btn-exp:active{transform:scale(.97)}
 .btn-exp svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
+.btn-all{display:flex;align-items:center;gap:6px;background:#1F4E79;color:#fff;border:none;border-radius:8px;padding:0 14px;height:36px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
+.btn-all:hover{background:#163a5c}
+.btn-all:active{transform:scale(.97)}
+.btn-all svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
+.btn-all{display:flex;align-items:center;gap:6px;background:#7C3AED;color:#fff;border:none;border-radius:8px;padding:0 14px;height:36px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
+.btn-all:hover{background:#6D28D9}
+.btn-all:active{transform:scale(.97)}
+.btn-all svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:14px 22px;flex-shrink:0}
 .card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
 .cl{font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
@@ -112,6 +120,14 @@ tbody tr:last-child td{border-bottom:none}
       <button class="btn-exp" id="exportBtn">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Export Excel
+      </button>
+      <button class="btn-all" id="exportAllBtn">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        All Data Export
+      </button>
+      <button class="btn-all" id="exportAllBtn">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        All Data Export
       </button>
     </div>
     <div class="cards" id="cards"></div>
@@ -276,8 +292,159 @@ function exportToExcel(){
   XLSX.writeFile(wb,`L181_Report_${active}.xlsx`);
 }
 
+function exportAllToExcel(){
+  if(!Object.keys(REPORTS).length) return;
+  const wb = XLSX.utils.book_new();
+  const dates = Object.keys(REPORTS).sort();
+
+  // ── SHEET 1: Summary ─────────────────────────────────────────────────────
+  const summaryData = [];
+  let gQty=0, gSell=0, gCost=0, gProfit=0, gSkus=0;
+
+  dates.forEach(d=>{
+    const r = REPORTS[d];
+    const tQ    = r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
+    const tS    = r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+    const tC    = r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
+    const tP    = r.rows.reduce((a,x)=>a+(x.profit||0),0);
+    const mg    = tS ? +((tP/tS)*100).toFixed(1) : 0;
+    gQty+=tQ; gSell+=tS; gCost+=tC; gProfit+=tP; gSkus+=r.rows.length;
+    summaryData.push({
+      'Date': r.label,
+      'Total SKUs': r.rows.length,
+      'Total Qty': tQ,
+      'Selling Value (₹)': +tS.toFixed(2),
+      'Costing Value (₹)': +tC.toFixed(2),
+      'Profit (₹)': +tP.toFixed(2),
+      'Margin %': mg
+    });
+  });
+
+  summaryData.push({
+    'Date': 'GRAND TOTAL',
+    'Total SKUs': gSkus,
+    'Total Qty': gQty,
+    'Selling Value (₹)': +gSell.toFixed(2),
+    'Costing Value (₹)': +gCost.toFixed(2),
+    'Profit (₹)': +gProfit.toFixed(2),
+    'Margin %': gSell ? +((gProfit/gSell)*100).toFixed(1) : 0
+  });
+
+  const wsSummary = XLSX.utils.json_to_sheet(summaryData);
+  wsSummary['!cols'] = [{wch:18},{wch:11},{wch:11},{wch:18},{wch:18},{wch:14},{wch:10}];
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+  // ── SHEET per date ────────────────────────────────────────────────────────
+  dates.forEach(d=>{
+    const r = REPORTS[d];
+    const data = r.rows.map(x=>({
+      'SKU': x.sku,
+      'Sales Qty': x.salesQty,
+      'Sales Price (₹)': x.salesPrice,
+      'Selling Value (₹)': x.sellingValue,
+      'Cost (₹)': x.cost,
+      'Costing Value (₹)': x.costingValue,
+      'Profit (₹)': x.profit
+    }));
+    const tQ=r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
+    const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+    const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
+    const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
+    data.push({'SKU':'TOTAL','Sales Qty':tQ,'Sales Price (₹)':'','Selling Value (₹)':+tS.toFixed(2),'Cost (₹)':'','Costing Value (₹)':+tC.toFixed(2),'Profit (₹)':+tP.toFixed(2)});
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    ws['!cols'] = [{wch:44},{wch:10},{wch:14},{wch:16},{wch:11},{wch:16},{wch:13}];
+    // Sheet name: "01 Jun", "02 Jun" etc — max 31 chars
+    const [y,m,day] = d.split('-');
+    const mon = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m];
+    const sheetName = `${day} ${mon} ${y}`;
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  });
+
+  const today = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `L181_All_Data_${today}.xlsx`);
+}
+
+function exportAllToExcel(){
+  const dates = Object.keys(REPORTS).sort();
+  if(!dates.length) return;
+
+  const wb = XLSX.utils.book_new();
+
+  // ── SHEET 1: Summary ──────────────────────────────────────
+  const summaryData = [
+    ['L181 Sales Dashboard — All Dates Summary'],
+    ['Created By Sujal | Only DeoDap Web Sales Data'],
+    [''],
+    ['Date', 'SKUs', 'Total Qty', 'Selling Value (₹)', 'Costing Value (₹)', 'Profit (₹)', 'Margin %']
+  ];
+  let grandQty=0, grandSell=0, grandCost=0, grandProfit=0;
+  dates.forEach(d => {
+    const r = REPORTS[d];
+    const tQ   = r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
+    const tS   = r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+    const tC   = r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
+    const tP   = r.rows.reduce((a,x)=>a+(x.profit||0),0);
+    const mg   = tS ? +((tP/tS)*100).toFixed(2) : 0;
+    summaryData.push([r.label, r.rows.length, tQ, +tS.toFixed(2), +tC.toFixed(2), +tP.toFixed(2), mg+'%']);
+    grandQty+=tQ; grandSell+=tS; grandCost+=tC; grandProfit+=tP;
+  });
+  const grandMg = grandSell ? +((grandProfit/grandSell)*100).toFixed(2) : 0;
+  summaryData.push(['']);
+  summaryData.push(['GRAND TOTAL', '', grandQty, +grandSell.toFixed(2), +grandCost.toFixed(2), +grandProfit.toFixed(2), grandMg+'%']);
+
+  const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+  wsSummary['!cols'] = [{wch:18},{wch:7},{wch:12},{wch:20},{wch:20},{wch:16},{wch:10}];
+  wsSummary['!merges'] = [{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+  // ── SHEET 2: All Data Combined ────────────────────────────
+  const allRows = [['Date','SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']];
+  dates.forEach(d => {
+    const r = REPORTS[d];
+    r.rows.forEach(x => {
+      allRows.push([r.label, x.sku, x.salesQty, x.salesPrice, x.sellingValue, x.cost, x.costingValue, x.profit]);
+    });
+    const tQ=r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
+    const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+    const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
+    const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
+    allRows.push([r.label+' TOTAL','',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
+    allRows.push(['']);
+  });
+  const wsAll = XLSX.utils.aoa_to_sheet(allRows);
+  wsAll['!cols'] = [{wch:16},{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
+  XLSX.utils.book_append_sheet(wb, wsAll, 'All Data');
+
+  // ── SHEET per DATE ────────────────────────────────────────
+  dates.forEach(d => {
+    const r = REPORTS[d];
+    const sheetRows = [
+      ['L181 SKU Sales Report — ' + r.label],
+      [''],
+      ['SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']
+    ];
+    let tQ=0,tS=0,tC=0,tP=0;
+    r.rows.forEach(x => {
+      sheetRows.push([x.sku, x.salesQty, x.salesPrice, x.sellingValue, x.cost, x.costingValue, x.profit]);
+      tQ+=x.salesQty||0; tS+=x.sellingValue||0; tC+=x.costingValue||0; tP+=x.profit||0;
+    });
+    sheetRows.push(['']);
+    sheetRows.push(['TOTAL', tQ, '', +tS.toFixed(2), '', +tC.toFixed(2), +tP.toFixed(2)]);
+    const ws = XLSX.utils.aoa_to_sheet(sheetRows);
+    ws['!cols'] = [{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
+    ws['!merges'] = [{s:{r:0,c:0},e:{r:0,c:6}}];
+    const shName = d.slice(5).replace('-','') + '_' + r.label.split(' ')[0].padStart(2,'0');
+    XLSX.utils.book_append_sheet(wb, ws, shName.slice(0,31));
+  });
+
+  XLSX.writeFile(wb, 'L181_All_Sales_Data.xlsx');
+}
+
 document.getElementById('srchInput').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render();});
 document.getElementById('exportBtn').addEventListener('click',exportToExcel);
+document.getElementById('exportAllBtn').addEventListener('click',exportAllToExcel);
+document.getElementById('exportAllBtn').addEventListener('click',exportAllToExcel);
 document.querySelectorAll('th.sortable').forEach(th=>{
   th.addEventListener('click',()=>toggleSort(th.dataset.col, th.dataset.type));
 });
