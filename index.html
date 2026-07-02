@@ -66,6 +66,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .cv{font-size:19px;font-weight:700;color:var(--text);line-height:1.2;letter-spacing:-.01em}
 .cv.g{color:var(--green)}
 .cs{font-size:11px;color:var(--muted);margin-top:3px}
+.total-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:0 22px 14px;flex-shrink:0}
+.total-bar-label{grid-column:1/-1;font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.08em;padding:2px 0 4px;border-top:1px dashed var(--border2);margin-top:2px}
+.tcard{background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:10px;padding:12px 14px}
+.tcard .cl{font-size:10px;font-weight:700;color:#6B7FEC;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.tcard .cv{font-size:16px;font-weight:700;color:var(--blue);line-height:1.2;letter-spacing:-.01em}
+.tcard .cv.g{color:var(--green)}
+.tcard .cs{font-size:11px;color:#6B7FEC;margin-top:2px}
 .tarea{flex:1;overflow:auto;padding:0 22px 20px}
 .ttop{display:flex;align-items:center;justify-content:space-between;padding:10px 0 8px}
 .tcnt{font-size:12px;color:var(--muted)}
@@ -131,6 +138,7 @@ tbody tr:last-child td{border-bottom:none}
       </button>
     </div>
     <div class="cards" id="cards"></div>
+    <div class="total-bar" id="totalBar"></div>
     <div class="tarea">
       <div class="ttop">
         <span class="tcnt" id="tcnt"></span>
@@ -167,6 +175,7 @@ async function loadData(){
     const dates=Object.keys(REPORTS).sort().reverse();
     if(dates.length) go(dates[0]);
     sidebar();
+    renderTotalBar();
   }catch(e){
     document.getElementById('tbody').innerHTML='<tr><td colspan="7" class="empty">Error loading data. Please refresh.</td></tr>';
     document.getElementById('ptitle').textContent='Error loading dashboard';
@@ -186,6 +195,30 @@ function sidebar(){
 }
 
 function go(d){active=d;sidebar();render();}
+
+function renderTotalBar(){
+  const allDates = Object.keys(REPORTS);
+  if(!allDates.length) return;
+  let gQ=0,gS=0,gC=0,gP=0,gSkus=new Set();
+  allDates.forEach(d=>{
+    const rows=REPORTS[d].rows;
+    rows.forEach(x=>{
+      gQ+=x.salesQty||0;
+      gS+=x.sellingValue||0;
+      gC+=x.costingValue||0;
+      gP+=x.profit||0;
+      gSkus.add(x.sku);
+    });
+  });
+  const gMg=gS?((gP/gS)*100).toFixed(1):0;
+  document.getElementById('totalBar').innerHTML=`
+    <div class="total-bar-label">All Dates Combined Total (${allDates.length} days)</div>
+    <div class="tcard"><div class="cl">Total SKUs</div><div class="cv">${gSkus.size.toLocaleString('en-IN')}</div><div class="cs">unique products</div></div>
+    <div class="tcard"><div class="cl">Total Qty</div><div class="cv">${gQ.toLocaleString('en-IN')}</div><div class="cs">units sold</div></div>
+    <div class="tcard"><div class="cl">Total Selling</div><div class="cv" style="font-size:13px">${fmt(gS)}</div><div class="cs">gross revenue</div></div>
+    <div class="tcard"><div class="cl">Total Costing</div><div class="cv" style="font-size:13px">${fmt(gC)}</div><div class="cs">total cost</div></div>
+    <div class="tcard"><div class="cl">Total Profit</div><div class="cv g" style="font-size:13px">${fmt(gP)}</div><div class="cs">${gMg}% margin</div></div>`;
+}
 
 function toggleSort(col,type){
   if(sortCol===col){
