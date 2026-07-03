@@ -56,6 +56,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .btn-all:hover{background:#163a5c}
 .btn-all:active{transform:scale(.97)}
 .btn-all svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
+.btn-30{display:flex;align-items:center;gap:6px;background:#7C3AED;color:#fff;border:none;border-radius:8px;padding:0 12px;height:36px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
+.btn-30:hover{background:#6D28D9}.btn-30:active{transform:scale(.97)}
+.btn-30 svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
+.btn-15{display:flex;align-items:center;gap:6px;background:#B45309;color:#fff;border:none;border-radius:8px;padding:0 12px;height:36px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
+.btn-15:hover{background:#92400E}.btn-15:active{transform:scale(.97)}
+.btn-15 svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
 .btn-all{display:flex;align-items:center;gap:6px;background:#7C3AED;color:#fff;border:none;border-radius:8px;padding:0 14px;height:36px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
 .btn-all:hover{background:#6D28D9}
 .btn-all:active{transform:scale(.97)}
@@ -474,10 +480,83 @@ function exportAllToExcel(){
   XLSX.writeFile(wb, 'L181_All_Sales_Data.xlsx');
 }
 
+function exportLastNDays(n){
+  const dates = Object.keys(REPORTS).sort().reverse().slice(0, n);
+  if(!dates.length) return;
+  const wb = XLSX.utils.book_new();
+
+  // Summary sheet
+  const summaryData = [
+    [`L181 Sales Report — Last ${n} Days`],
+    ['Created By Sujal | Only DeoDap Web Sales Data'],
+    [''],
+    ['Date','SKUs','Total Qty','Selling Value (₹)','Costing Value (₹)','Profit (₹)','Margin %']
+  ];
+  let gQ=0,gS=0,gC=0,gP=0;
+  [...dates].reverse().forEach(d=>{
+    const r=REPORTS[d];
+    const tQ=r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
+    const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+    const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
+    const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
+    const mg=tS?+((tP/tS)*100).toFixed(2):0;
+    summaryData.push([r.label, r.rows.length, tQ, +tS.toFixed(2), +tC.toFixed(2), +tP.toFixed(2), mg+'%']);
+    gQ+=tQ; gS+=tS; gC+=tC; gP+=tP;
+  });
+  const gMg=gS?+((gP/gS)*100).toFixed(2):0;
+  summaryData.push(['']);
+  summaryData.push([`TOTAL (${dates.length} days)`,'',gQ,+gS.toFixed(2),+gC.toFixed(2),+gP.toFixed(2),gMg+'%']);
+  const wsSummary=XLSX.utils.aoa_to_sheet(summaryData);
+  wsSummary['!cols']=[{wch:18},{wch:7},{wch:12},{wch:20},{wch:20},{wch:16},{wch:10}];
+  wsSummary['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+  // All data combined sheet
+  const allRows=[['Date','SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']];
+  [...dates].reverse().forEach(d=>{
+    const r=REPORTS[d];
+    r.rows.forEach(x=>allRows.push([r.label,x.sku,x.salesQty,x.salesPrice,x.sellingValue,x.cost,x.costingValue,x.profit]));
+    const tQ=r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
+    const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+    const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
+    const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
+    allRows.push([r.label+' TOTAL','',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
+    allRows.push(['']);
+  });
+  const wsAll=XLSX.utils.aoa_to_sheet(allRows);
+  wsAll['!cols']=[{wch:16},{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
+  XLSX.utils.book_append_sheet(wb, wsAll, 'All Data');
+
+  // Per date sheets
+  [...dates].reverse().forEach(d=>{
+    const r=REPORTS[d];
+    const sheetRows=[['L181 SKU Sales Report — '+r.label],[''],
+      ['SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']];
+    let tQ=0,tS=0,tC=0,tP=0;
+    r.rows.forEach(x=>{
+      sheetRows.push([x.sku,x.salesQty,x.salesPrice,x.sellingValue,x.cost,x.costingValue,x.profit]);
+      tQ+=x.salesQty||0; tS+=x.sellingValue||0; tC+=x.costingValue||0; tP+=x.profit||0;
+    });
+    sheetRows.push(['']);
+    sheetRows.push(['TOTAL',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
+    const ws=XLSX.utils.aoa_to_sheet(sheetRows);
+    ws['!cols']=[{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
+    ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}}];
+    XLSX.utils.book_append_sheet(wb, ws, d.slice(5).replace('-','')+'_'+r.label.split(' ')[0].padStart(2,'0'));
+  });
+
+  const today=new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `L181_Last${n}Days_${today}.xlsx`);
+}
+
 document.getElementById('srchInput').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render();});
 document.getElementById('exportBtn').addEventListener('click',exportToExcel);
 document.getElementById('exportAllBtn').addEventListener('click',exportAllToExcel);
+document.getElementById('export30Btn').addEventListener('click',()=>exportLastNDays(30));
+document.getElementById('export15Btn').addEventListener('click',()=>exportLastNDays(15));
 document.getElementById('exportAllBtn').addEventListener('click',exportAllToExcel);
+document.getElementById('export30Btn').addEventListener('click',()=>exportLastNDays(30));
+document.getElementById('export15Btn').addEventListener('click',()=>exportLastNDays(15));
 document.querySelectorAll('th.sortable').forEach(th=>{
   th.addEventListener('click',()=>toggleSort(th.dataset.col, th.dataset.type));
 });
