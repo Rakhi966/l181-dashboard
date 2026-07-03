@@ -41,31 +41,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .sbot-desc{font-size:11px;color:var(--muted);margin-bottom:8px}
 .sbot-credit{font-size:10px;color:var(--light);font-style:italic;font-weight:700}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0}
-.ptitle{font-size:15px;font-weight:700;letter-spacing:-.01em}
-.srch{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:0 12px;height:36px;width:250px;transition:.15s}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.ptitle{font-size:15px;font-weight:700;letter-spacing:-.01em;flex:1;min-width:180px}
+.srch{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:0 12px;height:36px;width:200px;transition:.15s}
 .srch:focus-within{border-color:var(--blue);background:var(--white)}
 .srch svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2;flex-shrink:0}
 .srch input{border:none;background:transparent;font-size:13px;color:var(--text);outline:none;width:100%;font-family:var(--sans)}
 .srch input::placeholder{color:var(--light)}
-.btn-exp{display:flex;align-items:center;gap:6px;background:var(--green);color:#fff;border:none;border-radius:8px;padding:0 14px;height:36px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
-.btn-exp:hover{background:#0F6B30}
-.btn-exp:active{transform:scale(.97)}
-.btn-exp svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
-.btn-all{display:flex;align-items:center;gap:6px;background:#1F4E79;color:#fff;border:none;border-radius:8px;padding:0 14px;height:36px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
-.btn-all:hover{background:#163a5c}
-.btn-all:active{transform:scale(.97)}
-.btn-all svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
-.btn-30{display:flex;align-items:center;gap:6px;background:#7C3AED;color:#fff;border:none;border-radius:8px;padding:0 12px;height:36px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
-.btn-30:hover{background:#6D28D9}.btn-30:active{transform:scale(.97)}
-.btn-30 svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
-.btn-15{display:flex;align-items:center;gap:6px;background:#B45309;color:#fff;border:none;border-radius:8px;padding:0 12px;height:36px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
-.btn-15:hover{background:#92400E}.btn-15:active{transform:scale(.97)}
-.btn-15 svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
-.btn-all{display:flex;align-items:center;gap:6px;background:#7C3AED;color:#fff;border:none;border-radius:8px;padding:0 14px;height:36px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0}
-.btn-all:hover{background:#6D28D9}
-.btn-all:active{transform:scale(.97)}
-.btn-all svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
+.btn{display:flex;align-items:center;gap:5px;border:none;border-radius:8px;padding:0 12px;height:36px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s;flex-shrink:0;color:#fff}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green)}.btn-green:hover{background:#0F6B30}
+.btn-blue{background:#1F4E79}.btn-blue:hover{background:#163a5c}
+.btn-purple{background:#7C3AED}.btn-purple:hover{background:#6D28D9}
+.btn-amber{background:#B45309}.btn-amber:hover{background:#92400E}
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:14px 22px;flex-shrink:0}
 .card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
 .cl{font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
@@ -73,12 +62,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .cv.g{color:var(--green)}
 .cs{font-size:11px;color:var(--muted);margin-top:3px}
 .total-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:0 22px 14px;flex-shrink:0}
-.total-bar-label{grid-column:1/-1;font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.08em;padding:2px 0 4px;border-top:1px dashed var(--border2);margin-top:2px}
+.total-bar-label{grid-column:1/-1;font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.08em;padding:2px 0 4px;border-top:1px dashed var(--border2)}
 .tcard{background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:10px;padding:12px 14px}
-.tcard .cl{font-size:10px;font-weight:700;color:#6B7FEC;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.tcard .cv{font-size:16px;font-weight:700;color:var(--blue);line-height:1.2;letter-spacing:-.01em}
+.tcard .cl{color:#6B7FEC}
+.tcard .cv{color:var(--blue)}
 .tcard .cv.g{color:var(--green)}
-.tcard .cs{font-size:11px;color:#6B7FEC;margin-top:2px}
+.tcard .cs{color:#6B7FEC}
 .tarea{flex:1;overflow:auto;padding:0 22px 20px}
 .ttop{display:flex;align-items:center;justify-content:space-between;padding:10px 0 8px}
 .tcnt{font-size:12px;color:var(--muted)}
@@ -91,7 +80,7 @@ th:first-child{text-align:left}
 th.sortable{cursor:pointer;user-select:none;transition:.12s}
 th.sortable:hover{background:#E2E6F2;color:var(--text)}
 th.sortable.active{color:var(--blue);background:var(--blue-bg)}
-.arr{display:inline-block;margin-left:3px;font-size:9px;opacity:.55;letter-spacing:0}
+.arr{display:inline-block;margin-left:3px;font-size:9px;opacity:.55}
 th.sortable.active .arr{opacity:1}
 td{padding:7px 12px;border-bottom:1px solid var(--border);text-align:right;font-size:12.5px;color:var(--muted)}
 td:first-child{text-align:left;font-family:var(--mono);font-size:12px;color:var(--text);font-weight:700;letter-spacing:-.01em;max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -102,21 +91,17 @@ tbody tr:last-child td{border-bottom:none}
 .tot td{background:var(--surface);font-weight:700;color:var(--text);border-top:2px solid var(--border2)}
 .tot td.p{color:var(--green)}
 .empty{text-align:center;padding:40px;color:var(--muted);font-size:13px}
-.loading{display:flex;align-items:center;justify-content:center;height:200px;color:var(--muted);font-size:13px;gap:10px}
-@media(max-width:800px){.sidebar{width:170px}.cards{grid-template-columns:repeat(3,1fr)}.cv{font-size:15px}.topbar{flex-wrap:wrap;height:auto;padding:10px 14px}.srch{width:140px}.btn-exp{padding:0 10px;font-size:12px}}
 </style>
 </head>
 <body>
 <div class="shell">
   <aside class="sidebar">
     <div class="logo">
-      <div class="logo-box">
-        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg>
-      </div>
+      <div class="logo-box"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg></div>
       <div><div class="logo-name">L181</div><div class="logo-sub">Sales Dashboard</div></div>
     </div>
     <div class="nav-lbl">Reports</div>
-    <div class="date-list" id="dateList"><div class="loading">Loading...</div></div>
+    <div class="date-list" id="dateList"><div style="padding:12px;color:var(--muted);font-size:12px">Loading...</div></div>
     <div class="sbot">
       <div class="sbot-title">Rakhi 2k26</div>
       <div class="sbot-desc">Only DeoDap Web Sales Data</div>
@@ -130,17 +115,21 @@ tbody tr:last-child td{border-bottom:none}
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" placeholder="Search SKU..." id="srchInput">
       </div>
-      <button class="btn-exp" id="exportBtn">
+      <button class="btn btn-green" id="exportBtn">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Export Excel
       </button>
-      <button class="btn-all" id="exportAllBtn">
+      <button class="btn btn-blue" id="exportAllBtn">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         All Data Export
       </button>
-      <button class="btn-all" id="exportAllBtn">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        All Data Export
+      <button class="btn btn-purple" id="export30Btn">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Last 30 Days
+      </button>
+      <button class="btn btn-amber" id="export15Btn">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Last 15 Days
       </button>
     </div>
     <div class="cards" id="cards"></div>
@@ -148,7 +137,7 @@ tbody tr:last-child td{border-bottom:none}
     <div class="tarea">
       <div class="ttop">
         <span class="tcnt" id="tcnt"></span>
-        <span class="hint" id="sortHint">Click any column to sort</span>
+        <span class="hint">Click any column to sort</span>
         <span class="badge"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span id="mgTxt"></span></span>
       </div>
       <table>
@@ -161,35 +150,34 @@ tbody tr:last-child td{border-bottom:none}
           <th class="sortable" data-col="costingValue" data-type="num" style="width:13%">Costing value<span class="arr" id="arr-costingValue"></span></th>
           <th class="sortable" data-col="profit" data-type="num" style="width:11%;color:#15803D">Profit<span class="arr" id="arr-profit"></span></th>
         </tr></thead>
-        <tbody id="tbody"><tr><td colspan="7" class="loading">Loading data...</td></tr></tbody>
+        <tbody id="tbody"><tr><td colspan="7" class="empty">Loading data...</td></tr></tbody>
       </table>
     </div>
   </main>
 </div>
 <script>
-let REPORTS={}, active='', q='';
-let sortCol=null, sortDir=null, sortType='num'; // sortDir: 'asc' | 'desc' | null
+let REPORTS={}, active='', q='', sortCol=null, sortDir=null, sortType='num';
 
-const fmt=n=>n==null?'—':'₹'+(+n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-const fmtN=n=>n==null?'—':(+n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmt  = n => n==null ? '—' : '₹'+(+n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtN = n => n==null ? '—' : (+n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 
 async function loadData(){
   try{
-    const r=await fetch('data.json?t='+Date.now());
-    const d=await r.json();
-    REPORTS=d.reports||{};
-    const dates=Object.keys(REPORTS).sort().reverse();
-    if(dates.length) go(dates[0]);
+    const r = await fetch('data.json?t='+Date.now());
+    const d = await r.json();
+    REPORTS = d.reports || {};
+    const dates = Object.keys(REPORTS).sort().reverse();
     sidebar();
     renderTotalBar();
+    if(dates.length) go(dates[0]);
   }catch(e){
-    document.getElementById('tbody').innerHTML='<tr><td colspan="7" class="empty">Error loading data. Please refresh.</td></tr>';
-    document.getElementById('ptitle').textContent='Error loading dashboard';
+    document.getElementById('ptitle').textContent = 'Error loading data — please refresh';
+    document.getElementById('tbody').innerHTML = '<tr><td colspan="7" class="empty">Failed to load. Please refresh the page.</td></tr>';
   }
 }
 
 function sidebar(){
-  document.getElementById('dateList').innerHTML=Object.keys(REPORTS).sort().reverse().map(d=>{
+  document.getElementById('dateList').innerHTML = Object.keys(REPORTS).sort().reverse().map(d=>{
     const r=REPORTS[d];
     const s=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
     const p=r.rows.reduce((a,x)=>a+(x.profit||0),0);
@@ -200,40 +188,26 @@ function sidebar(){
   }).join('');
 }
 
-function go(d){active=d;sidebar();render();}
+function go(d){ active=d; sidebar(); render(); }
 
 function renderTotalBar(){
-  const allDates = Object.keys(REPORTS);
+  const allDates=Object.keys(REPORTS);
   if(!allDates.length) return;
   let gQ=0,gS=0,gC=0,gP=0,gSkus=new Set();
-  allDates.forEach(d=>{
-    const rows=REPORTS[d].rows;
-    rows.forEach(x=>{
-      gQ+=x.salesQty||0;
-      gS+=x.sellingValue||0;
-      gC+=x.costingValue||0;
-      gP+=x.profit||0;
-      gSkus.add(x.sku);
-    });
-  });
-  const gMg=gS?((gP/gS)*100).toFixed(1):0;
+  allDates.forEach(d=>{ REPORTS[d].rows.forEach(x=>{ gQ+=x.salesQty||0; gS+=x.sellingValue||0; gC+=x.costingValue||0; gP+=x.profit||0; gSkus.add(x.sku); }); });
+  const mg=gS?((gP/gS)*100).toFixed(1):0;
   document.getElementById('totalBar').innerHTML=`
     <div class="total-bar-label">All Dates Combined Total (${allDates.length} days)</div>
     <div class="tcard"><div class="cl">Total SKUs</div><div class="cv">${gSkus.size.toLocaleString('en-IN')}</div><div class="cs">unique products</div></div>
     <div class="tcard"><div class="cl">Total Qty</div><div class="cv">${gQ.toLocaleString('en-IN')}</div><div class="cs">units sold</div></div>
     <div class="tcard"><div class="cl">Total Selling</div><div class="cv" style="font-size:13px">${fmt(gS)}</div><div class="cs">gross revenue</div></div>
     <div class="tcard"><div class="cl">Total Costing</div><div class="cv" style="font-size:13px">${fmt(gC)}</div><div class="cs">total cost</div></div>
-    <div class="tcard"><div class="cl">Total Profit</div><div class="cv g" style="font-size:13px">${fmt(gP)}</div><div class="cs">${gMg}% margin</div></div>`;
+    <div class="tcard"><div class="cl">Total Profit</div><div class="cv g" style="font-size:13px">${fmt(gP)}</div><div class="cs">${mg}% margin</div></div>`;
 }
 
 function toggleSort(col,type){
-  if(sortCol===col){
-    if(sortDir==='asc') sortDir='desc';
-    else if(sortDir==='desc'){sortCol=null;sortDir=null;}
-    else sortDir='asc';
-  }else{
-    sortCol=col;sortDir='asc';sortType=type;
-  }
+  if(sortCol===col){ if(sortDir==='asc') sortDir='desc'; else if(sortDir==='desc'){sortCol=null;sortDir=null;} else sortDir='asc'; }
+  else{ sortCol=col; sortDir='asc'; sortType=type; }
   render();
 }
 
@@ -241,34 +215,24 @@ function applySort(rows){
   if(!sortCol) return rows;
   const copy=[...rows];
   copy.sort((a,b)=>{
-    let av=a[sortCol], bv=b[sortCol];
-    if(sortType==='str'){
-      av=(av||'').toLowerCase(); bv=(bv||'').toLowerCase();
-      return sortDir==='asc' ? av.localeCompare(bv) : bv.localeCompare(av);
-    }
-    av = (av==null) ? -Infinity : av;
-    bv = (bv==null) ? -Infinity : bv;
-    return sortDir==='asc' ? av-bv : bv-av;
+    let av=a[sortCol],bv=b[sortCol];
+    if(sortType==='str'){ av=(av||'').toLowerCase(); bv=(bv||'').toLowerCase(); return sortDir==='asc'?av.localeCompare(bv):bv.localeCompare(av); }
+    av=av==null?-Infinity:av; bv=bv==null?-Infinity:bv;
+    return sortDir==='asc'?av-bv:bv-av;
   });
   return copy;
 }
 
 function updateHeaderUI(){
   document.querySelectorAll('th.sortable').forEach(th=>{
-    const col=th.dataset.col;
-    const arrEl=document.getElementById('arr-'+col);
-    if(col===sortCol){
-      th.classList.add('active');
-      arrEl.textContent = sortDir==='asc' ? '▲' : '▼';
-    }else{
-      th.classList.remove('active');
-      arrEl.textContent='';
-    }
+    const col=th.dataset.col, arrEl=document.getElementById('arr-'+col);
+    if(col===sortCol){ th.classList.add('active'); arrEl.textContent=sortDir==='asc'?'▲':'▼'; }
+    else{ th.classList.remove('active'); arrEl.textContent=''; }
   });
 }
 
 function render(){
-  const r=REPORTS[active];if(!r)return;
+  const r=REPORTS[active]; if(!r) return;
   document.getElementById('ptitle').textContent=r.label+' — SKU Sales Report';
   let rows=r.rows.filter(x=>!q||x.sku.toLowerCase().includes(q));
   const tQ=rows.reduce((a,x)=>a+(x.salesQty||0),0);
@@ -284,10 +248,7 @@ function render(){
     <div class="card"><div class="cl">Net profit</div><div class="cv g" style="font-size:15px">${fmt(tP)}</div><div class="cs">${mg}% margin</div></div>`;
   document.getElementById('tcnt').textContent=rows.length+' SKUs'+(q?' (filtered)':'');
   document.getElementById('mgTxt').textContent=mg+'% profit margin';
-
-  rows=applySort(rows);
-  updateHeaderUI();
-
+  rows=applySort(rows); updateHeaderUI();
   const tb=document.getElementById('tbody');
   if(!rows.length){tb.innerHTML='<tr><td colspan="7" class="empty">No results found</td></tr>';return;}
   tb.innerHTML=rows.map(x=>`<tr>
@@ -302,196 +263,12 @@ function render(){
   </tr>`;
 }
 
-function exportToExcel(){
-  const r=REPORTS[active]; if(!r) return;
-  let rows=r.rows.filter(x=>!q||x.sku.toLowerCase().includes(q));
-  rows=applySort(rows);
-
-  const data=rows.map(x=>({
-    'SKU': x.sku,
-    'Sales Qty': x.salesQty,
-    'Sales Price': x.salesPrice,
-    'Selling Value': x.sellingValue,
-    'Cost': x.cost,
-    'Costing Value': x.costingValue,
-    'Profit': x.profit
-  }));
-
-  const tQ=rows.reduce((a,x)=>a+(x.salesQty||0),0);
-  const tS=rows.reduce((a,x)=>a+(x.sellingValue||0),0);
-  const tC=rows.reduce((a,x)=>a+(x.costingValue||0),0);
-  const tP=rows.reduce((a,x)=>a+(x.profit||0),0);
-  data.push({'SKU':'TOTAL','Sales Qty':tQ,'Sales Price':'','Selling Value':tS,'Cost':'','Costing Value':tC,'Profit':tP});
-
-  const ws=XLSX.utils.json_to_sheet(data);
-  ws['!cols']=[{wch:42},{wch:10},{wch:12},{wch:14},{wch:10},{wch:14},{wch:12}];
+// ── EXCEL EXPORTS ─────────────────────────────────────────────────────────────
+function buildWorkbook(dates){
   const wb=XLSX.utils.book_new();
-  const sheetName=r.label.replace(/[\\/*?:[\]]/g,'').slice(0,31);
-  XLSX.utils.book_append_sheet(wb,ws,sheetName);
-  XLSX.writeFile(wb,`L181_Report_${active}.xlsx`);
-}
-
-function exportAllToExcel(){
-  if(!Object.keys(REPORTS).length) return;
-  const wb = XLSX.utils.book_new();
-  const dates = Object.keys(REPORTS).sort();
-
-  // ── SHEET 1: Summary ─────────────────────────────────────────────────────
-  const summaryData = [];
-  let gQty=0, gSell=0, gCost=0, gProfit=0, gSkus=0;
-
-  dates.forEach(d=>{
-    const r = REPORTS[d];
-    const tQ    = r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
-    const tS    = r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
-    const tC    = r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
-    const tP    = r.rows.reduce((a,x)=>a+(x.profit||0),0);
-    const mg    = tS ? +((tP/tS)*100).toFixed(1) : 0;
-    gQty+=tQ; gSell+=tS; gCost+=tC; gProfit+=tP; gSkus+=r.rows.length;
-    summaryData.push({
-      'Date': r.label,
-      'Total SKUs': r.rows.length,
-      'Total Qty': tQ,
-      'Selling Value (₹)': +tS.toFixed(2),
-      'Costing Value (₹)': +tC.toFixed(2),
-      'Profit (₹)': +tP.toFixed(2),
-      'Margin %': mg
-    });
-  });
-
-  summaryData.push({
-    'Date': 'GRAND TOTAL',
-    'Total SKUs': gSkus,
-    'Total Qty': gQty,
-    'Selling Value (₹)': +gSell.toFixed(2),
-    'Costing Value (₹)': +gCost.toFixed(2),
-    'Profit (₹)': +gProfit.toFixed(2),
-    'Margin %': gSell ? +((gProfit/gSell)*100).toFixed(1) : 0
-  });
-
-  const wsSummary = XLSX.utils.json_to_sheet(summaryData);
-  wsSummary['!cols'] = [{wch:18},{wch:11},{wch:11},{wch:18},{wch:18},{wch:14},{wch:10}];
-  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
-
-  // ── SHEET per date ────────────────────────────────────────────────────────
-  dates.forEach(d=>{
-    const r = REPORTS[d];
-    const data = r.rows.map(x=>({
-      'SKU': x.sku,
-      'Sales Qty': x.salesQty,
-      'Sales Price (₹)': x.salesPrice,
-      'Selling Value (₹)': x.sellingValue,
-      'Cost (₹)': x.cost,
-      'Costing Value (₹)': x.costingValue,
-      'Profit (₹)': x.profit
-    }));
-    const tQ=r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
-    const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
-    const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
-    const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
-    data.push({'SKU':'TOTAL','Sales Qty':tQ,'Sales Price (₹)':'','Selling Value (₹)':+tS.toFixed(2),'Cost (₹)':'','Costing Value (₹)':+tC.toFixed(2),'Profit (₹)':+tP.toFixed(2)});
-
-    const ws = XLSX.utils.json_to_sheet(data);
-    ws['!cols'] = [{wch:44},{wch:10},{wch:14},{wch:16},{wch:11},{wch:16},{wch:13}];
-    // Sheet name: "01 Jun", "02 Jun" etc — max 31 chars
-    const [y,m,day] = d.split('-');
-    const mon = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m];
-    const sheetName = `${day} ${mon} ${y}`;
-    XLSX.utils.book_append_sheet(wb, ws, sheetName);
-  });
-
-  const today = new Date().toISOString().slice(0,10);
-  XLSX.writeFile(wb, `L181_All_Data_${today}.xlsx`);
-}
-
-function exportAllToExcel(){
-  const dates = Object.keys(REPORTS).sort();
-  if(!dates.length) return;
-
-  const wb = XLSX.utils.book_new();
-
-  // ── SHEET 1: Summary ──────────────────────────────────────
-  const summaryData = [
-    ['L181 Sales Dashboard — All Dates Summary'],
-    ['Created By Sujal | Only DeoDap Web Sales Data'],
-    [''],
-    ['Date', 'SKUs', 'Total Qty', 'Selling Value (₹)', 'Costing Value (₹)', 'Profit (₹)', 'Margin %']
-  ];
-  let grandQty=0, grandSell=0, grandCost=0, grandProfit=0;
-  dates.forEach(d => {
-    const r = REPORTS[d];
-    const tQ   = r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
-    const tS   = r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
-    const tC   = r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
-    const tP   = r.rows.reduce((a,x)=>a+(x.profit||0),0);
-    const mg   = tS ? +((tP/tS)*100).toFixed(2) : 0;
-    summaryData.push([r.label, r.rows.length, tQ, +tS.toFixed(2), +tC.toFixed(2), +tP.toFixed(2), mg+'%']);
-    grandQty+=tQ; grandSell+=tS; grandCost+=tC; grandProfit+=tP;
-  });
-  const grandMg = grandSell ? +((grandProfit/grandSell)*100).toFixed(2) : 0;
-  summaryData.push(['']);
-  summaryData.push(['GRAND TOTAL', '', grandQty, +grandSell.toFixed(2), +grandCost.toFixed(2), +grandProfit.toFixed(2), grandMg+'%']);
-
-  const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
-  wsSummary['!cols'] = [{wch:18},{wch:7},{wch:12},{wch:20},{wch:20},{wch:16},{wch:10}];
-  wsSummary['!merges'] = [{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];
-  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
-
-  // ── SHEET 2: All Data Combined ────────────────────────────
-  const allRows = [['Date','SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']];
-  dates.forEach(d => {
-    const r = REPORTS[d];
-    r.rows.forEach(x => {
-      allRows.push([r.label, x.sku, x.salesQty, x.salesPrice, x.sellingValue, x.cost, x.costingValue, x.profit]);
-    });
-    const tQ=r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
-    const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
-    const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
-    const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
-    allRows.push([r.label+' TOTAL','',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
-    allRows.push(['']);
-  });
-  const wsAll = XLSX.utils.aoa_to_sheet(allRows);
-  wsAll['!cols'] = [{wch:16},{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
-  XLSX.utils.book_append_sheet(wb, wsAll, 'All Data');
-
-  // ── SHEET per DATE ────────────────────────────────────────
-  dates.forEach(d => {
-    const r = REPORTS[d];
-    const sheetRows = [
-      ['L181 SKU Sales Report — ' + r.label],
-      [''],
-      ['SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']
-    ];
-    let tQ=0,tS=0,tC=0,tP=0;
-    r.rows.forEach(x => {
-      sheetRows.push([x.sku, x.salesQty, x.salesPrice, x.sellingValue, x.cost, x.costingValue, x.profit]);
-      tQ+=x.salesQty||0; tS+=x.sellingValue||0; tC+=x.costingValue||0; tP+=x.profit||0;
-    });
-    sheetRows.push(['']);
-    sheetRows.push(['TOTAL', tQ, '', +tS.toFixed(2), '', +tC.toFixed(2), +tP.toFixed(2)]);
-    const ws = XLSX.utils.aoa_to_sheet(sheetRows);
-    ws['!cols'] = [{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
-    ws['!merges'] = [{s:{r:0,c:0},e:{r:0,c:6}}];
-    const shName = d.slice(5).replace('-','') + '_' + r.label.split(' ')[0].padStart(2,'0');
-    XLSX.utils.book_append_sheet(wb, ws, shName.slice(0,31));
-  });
-
-  XLSX.writeFile(wb, 'L181_All_Sales_Data.xlsx');
-}
-
-function exportLastNDays(n){
-  const dates = Object.keys(REPORTS).sort().reverse().slice(0, n);
-  if(!dates.length) return;
-  const wb = XLSX.utils.book_new();
-
-  // Summary sheet
-  const summaryData = [
-    [`L181 Sales Report — Last ${n} Days`],
-    ['Created By Sujal | Only DeoDap Web Sales Data'],
-    [''],
-    ['Date','SKUs','Total Qty','Selling Value (₹)','Costing Value (₹)','Profit (₹)','Margin %']
-  ];
+  // Summary
+  const sd=[['L181 Sales Dashboard — Report'],['Created By Sujal | Only DeoDap Web Sales Data'],[''],
+    ['Date','SKUs','Total Qty','Selling Value (₹)','Costing Value (₹)','Profit (₹)','Margin %']];
   let gQ=0,gS=0,gC=0,gP=0;
   [...dates].reverse().forEach(d=>{
     const r=REPORTS[d];
@@ -499,64 +276,83 @@ function exportLastNDays(n){
     const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
     const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
     const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
-    const mg=tS?+((tP/tS)*100).toFixed(2):0;
-    summaryData.push([r.label, r.rows.length, tQ, +tS.toFixed(2), +tC.toFixed(2), +tP.toFixed(2), mg+'%']);
-    gQ+=tQ; gS+=tS; gC+=tC; gP+=tP;
+    sd.push([r.label,r.rows.length,tQ,+tS.toFixed(2),+tC.toFixed(2),+tP.toFixed(2),tS?+((tP/tS)*100).toFixed(2)+'%':'0%']);
+    gQ+=tQ;gS+=tS;gC+=tC;gP+=tP;
   });
-  const gMg=gS?+((gP/gS)*100).toFixed(2):0;
-  summaryData.push(['']);
-  summaryData.push([`TOTAL (${dates.length} days)`,'',gQ,+gS.toFixed(2),+gC.toFixed(2),+gP.toFixed(2),gMg+'%']);
-  const wsSummary=XLSX.utils.aoa_to_sheet(summaryData);
-  wsSummary['!cols']=[{wch:18},{wch:7},{wch:12},{wch:20},{wch:20},{wch:16},{wch:10}];
-  wsSummary['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];
-  XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
-
-  // All data combined sheet
-  const allRows=[['Date','SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']];
+  sd.push(['']);
+  sd.push([`TOTAL (${dates.length} days)`,'',gQ,+gS.toFixed(2),+gC.toFixed(2),+gP.toFixed(2),gS?+((gP/gS)*100).toFixed(2)+'%':'0%']);
+  const ws0=XLSX.utils.aoa_to_sheet(sd);
+  ws0['!cols']=[{wch:18},{wch:7},{wch:12},{wch:20},{wch:20},{wch:16},{wch:10}];
+  ws0['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}}];
+  XLSX.utils.book_append_sheet(wb,ws0,'Summary');
+  // All Data
+  const ad=[['Date','SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']];
   [...dates].reverse().forEach(d=>{
     const r=REPORTS[d];
-    r.rows.forEach(x=>allRows.push([r.label,x.sku,x.salesQty,x.salesPrice,x.sellingValue,x.cost,x.costingValue,x.profit]));
+    r.rows.forEach(x=>ad.push([r.label,x.sku,x.salesQty,x.salesPrice,x.sellingValue,x.cost,x.costingValue,x.profit]));
     const tQ=r.rows.reduce((a,x)=>a+(x.salesQty||0),0);
     const tS=r.rows.reduce((a,x)=>a+(x.sellingValue||0),0);
     const tC=r.rows.reduce((a,x)=>a+(x.costingValue||0),0);
     const tP=r.rows.reduce((a,x)=>a+(x.profit||0),0);
-    allRows.push([r.label+' TOTAL','',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
-    allRows.push(['']);
+    ad.push([r.label+' TOTAL','',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
+    ad.push(['']);
   });
-  const wsAll=XLSX.utils.aoa_to_sheet(allRows);
-  wsAll['!cols']=[{wch:16},{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
-  XLSX.utils.book_append_sheet(wb, wsAll, 'All Data');
-
-  // Per date sheets
+  const ws1=XLSX.utils.aoa_to_sheet(ad);
+  ws1['!cols']=[{wch:16},{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
+  XLSX.utils.book_append_sheet(wb,ws1,'All Data');
+  // Per date
   [...dates].reverse().forEach(d=>{
     const r=REPORTS[d];
-    const sheetRows=[['L181 SKU Sales Report — '+r.label],[''],
+    const rows=[['L181 SKU Sales — '+r.label],[''],
       ['SKU','Sales Qty','Sales Price (₹)','Selling Value (₹)','Cost (₹)','Costing Value (₹)','Profit (₹)']];
     let tQ=0,tS=0,tC=0,tP=0;
-    r.rows.forEach(x=>{
-      sheetRows.push([x.sku,x.salesQty,x.salesPrice,x.sellingValue,x.cost,x.costingValue,x.profit]);
-      tQ+=x.salesQty||0; tS+=x.sellingValue||0; tC+=x.costingValue||0; tP+=x.profit||0;
-    });
-    sheetRows.push(['']);
-    sheetRows.push(['TOTAL',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
-    const ws=XLSX.utils.aoa_to_sheet(sheetRows);
+    r.rows.forEach(x=>{ rows.push([x.sku,x.salesQty,x.salesPrice,x.sellingValue,x.cost,x.costingValue,x.profit]); tQ+=x.salesQty||0;tS+=x.sellingValue||0;tC+=x.costingValue||0;tP+=x.profit||0; });
+    rows.push(['']);
+    rows.push(['TOTAL',tQ,'',+tS.toFixed(2),'',+tC.toFixed(2),+tP.toFixed(2)]);
+    const ws=XLSX.utils.aoa_to_sheet(rows);
     ws['!cols']=[{wch:42},{wch:10},{wch:14},{wch:18},{wch:12},{wch:18},{wch:14}];
     ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:6}}];
-    XLSX.utils.book_append_sheet(wb, ws, d.slice(5).replace('-','')+'_'+r.label.split(' ')[0].padStart(2,'0'));
+    XLSX.utils.book_append_sheet(wb,ws,(d.slice(5).replace('-','')+'_'+r.label.split(' ')[0].padStart(2,'0')).slice(0,31));
   });
-
-  const today=new Date().toISOString().slice(0,10);
-  XLSX.writeFile(wb, `L181_Last${n}Days_${today}.xlsx`);
+  return wb;
 }
 
-document.getElementById('srchInput').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render();});
-document.getElementById('exportBtn').addEventListener('click',exportToExcel);
-document.getElementById('exportAllBtn').addEventListener('click',exportAllToExcel);
-document.getElementById('export30Btn').addEventListener('click',()=>exportLastNDays(30));
-document.getElementById('export15Btn').addEventListener('click',()=>exportLastNDays(15));
-document.getElementById('exportAllBtn').addEventListener('click',exportAllToExcel);
-document.getElementById('export30Btn').addEventListener('click',()=>exportLastNDays(30));
-document.getElementById('export15Btn').addEventListener('click',()=>exportLastNDays(15));
+function exportToExcel(){
+  const r=REPORTS[active]; if(!r) return;
+  let rows=r.rows.filter(x=>!q||x.sku.toLowerCase().includes(q));
+  rows=applySort(rows);
+  const data=rows.map(x=>({'SKU':x.sku,'Sales Qty':x.salesQty,'Sales Price':x.salesPrice,'Selling Value':x.sellingValue,'Cost':x.cost,'Costing Value':x.costingValue,'Profit':x.profit}));
+  const tQ=rows.reduce((a,x)=>a+(x.salesQty||0),0);
+  const tS=rows.reduce((a,x)=>a+(x.sellingValue||0),0);
+  const tC=rows.reduce((a,x)=>a+(x.costingValue||0),0);
+  const tP=rows.reduce((a,x)=>a+(x.profit||0),0);
+  data.push({'SKU':'TOTAL','Sales Qty':tQ,'Sales Price':'','Selling Value':tS,'Cost':'','Costing Value':tC,'Profit':tP});
+  const ws=XLSX.utils.json_to_sheet(data);
+  ws['!cols']=[{wch:42},{wch:10},{wch:12},{wch:14},{wch:10},{wch:14},{wch:12}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,r.label.replace(/[\\/*?:[\]]/g,'').slice(0,31));
+  XLSX.writeFile(wb,'L181_Report_'+active+'.xlsx');
+}
+
+function exportAllToExcel(){
+  const dates=Object.keys(REPORTS).sort().reverse();
+  const wb=buildWorkbook(dates);
+  XLSX.writeFile(wb,'L181_All_Sales_Data.xlsx');
+}
+
+function exportLastNDays(n){
+  const dates=Object.keys(REPORTS).sort().reverse().slice(0,n);
+  const wb=buildWorkbook(dates);
+  const today=new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb,'L181_Last'+n+'Days_'+today+'.xlsx');
+}
+
+// ── EVENT LISTENERS ───────────────────────────────────────────────────────────
+document.getElementById('srchInput').addEventListener('input',e=>{ q=e.target.value.trim().toLowerCase(); render(); });
+document.getElementById('exportBtn').addEventListener('click', exportToExcel);
+document.getElementById('exportAllBtn').addEventListener('click', exportAllToExcel);
+document.getElementById('export30Btn').addEventListener('click', ()=>exportLastNDays(30));
+document.getElementById('export15Btn').addEventListener('click', ()=>exportLastNDays(15));
 document.querySelectorAll('th.sortable').forEach(th=>{
   th.addEventListener('click',()=>toggleSort(th.dataset.col, th.dataset.type));
 });
